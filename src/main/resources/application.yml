@@ -1,0 +1,30 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: livinginhotel
+  datasource:
+    hikari:
+      pool-name: livinginhotel-db-pool
+      connection-timeout: 7000
+      maximum-pool-size: 50
+      minimum-idle: 10
+      idle-timeout: 50000
+      max-lifetime: 60000
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 1234
+      auto-commit: false
+      connection-test-query: SELECT 1
+      jdbc-url: jdbc:mysql://localhost:13307/hotel
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        format_sql: true
+    show-sql: true
+    database: mysql
