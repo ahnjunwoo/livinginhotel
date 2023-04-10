@@ -12,7 +12,7 @@ data class Hotel(
 
     var name: String,
 
-    val status: HotelStatus = HotelStatus.EXIST,
+    var status: HotelStatus = HotelStatus.EXIST,
 
     var roomQuantity: Int,
 
@@ -24,6 +24,13 @@ data class Hotel(
 ) {
     fun reduceRoomQuantity() {
         this.roomQuantity -= 1
+        if(this.roomQuantity == 0) {
+            this.status = HotelStatus.NOT_EXIST
+        }
+    }
+
+    fun isNotExist(): Boolean {
+        return this.status == HotelStatus.NOT_EXIST || this.roomQuantity == 0
     }
 
     companion object {

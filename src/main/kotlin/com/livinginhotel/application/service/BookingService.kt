@@ -10,7 +10,6 @@ import com.livinginhotel.application.port.outbound.HotelPort
 import com.livinginhotel.common.UseCase
 import com.livinginhotel.domain.booking.Booking
 import com.livinginhotel.domain.booking.BookingStatus
-import com.livinginhotel.domain.hotel.HotelStatus
 import com.livinginhotel.exception.ApiCode
 import com.livinginhotel.exception.LivinginNonException
 import org.modelmapper.ModelMapper
@@ -26,7 +25,7 @@ class BookingService(
     @Transactional
     override fun booking(bookingRequest: BookingRequest) {
         val hotel = hotelPort.findById(bookingRequest.hotelId) ?: throw LivinginNonException(ApiCode.HOTEL_NOT_FOUND)
-        if (hotel.status == HotelStatus.NOT_EXIST || hotel.roomQuantity == 0) throw LivinginNonException(ApiCode.HOTEL_NOT_EXIST)
+        if (hotel.isNotExist()) throw LivinginNonException(ApiCode.HOTEL_NOT_EXIST)
         bookingPort.booking(Booking.booking(bookingRequest.hotelId))
     }
 
@@ -42,6 +41,7 @@ class BookingService(
         bookingPort.booking(booking)
     }
 
+    @Transactional(readOnly = true)
     override fun getBookings(): List<BookingResponse> {
         return bookingPort.getBookings().map {
             modelMapper.map(it, BookingResponse::class.java)

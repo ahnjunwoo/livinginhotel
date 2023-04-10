@@ -23,7 +23,7 @@ class HotelService(
         hotelPort.save(hotel)
     }
 
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     override fun getHotels(): List<HotelResponse> {
         return hotelPort.getHotels().map{
             modelMapper.map(it, HotelResponse::class.java)
